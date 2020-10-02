@@ -5,14 +5,24 @@ $(() => {
   $.get(
     "https://ipinfo.io",
     (response) => {
-      country = response.country;
+      country = suggestCountry(response.country);
       region = response.region;
-      $("#all").html(region);
+      $("#all").html(
+        "<a href='javascript:loadByCategory(\"" +
+          last_category +
+          "\")'>" +
+          region +
+          "</a>"
+      );
       loadNews();
     },
     "jsonp"
   );
 });
+suggestCountry = (country) => {
+  if (country.toLowerCase() == "st") return "pt";
+  else return country;
+};
 loadNews = () => {
   loadByCategory(last_category);
 };
@@ -61,7 +71,7 @@ loadByCategory = (category) => {
                 title +
                 '</h5><h6 class="m-0">' +
                 publishedAt +
-                '</h6></div><img height="100px" class="img-fluid card-img w-100 d-block rounded-0" src="' +
+                '</h6></div><img class="img-fluid card-img w-100 h-80 d-block rounded-0" src="' +
                 urlToImage +
                 '" /><div class="card-body"><p class="card-text">' +
                 description +
