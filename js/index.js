@@ -83,7 +83,7 @@ loadByCategory = (category) => {
           $("#paginationContent").html(htmlPagination);
           $.each(data.articles, (i, article) => {
             var title = article.title.substring(0, 50) + " ...",
-              publishedAt = article.publishedAt.split("T")[0],//convertDate(article.publishedAt.split("T")[0]),
+              publishedAt = convertDate(article.publishedAt.split("T")[0]),
               source = article.source.name,
               urlToImage = article.urlToImage,
               url = article.url;
@@ -114,13 +114,23 @@ loadByCategory = (category) => {
     },
   });
 };
-loadNext = () => {};
-loadAt = () => {};
-loadPrev = () => {};
+loadNext = () => {
+  if (paginationIndex > 1) {
+    paginationIndex--;
+    loadByCategory(last_category);
+  }
+};
+loadAt = (num) => {
+  paginationIndex = num;
+  loadByCategory(last_category);
+};
+loadPrev = () => {
+  if (paginationIndex < paginationGroup) {
+    paginationIndex++;
+    loadByCategory(last_category);
+  }
+};
 convertDate = (inputFormat) => {
-  pad = (s) => {
-    return s < 10 ? "0" + s : s;
-  };
-  var d = new Date(inputFormat);
-  return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("-");
+  var date = inputFormat.split("-");
+  return date[2] + "-" + date[1] + "-" + date[0];
 };
