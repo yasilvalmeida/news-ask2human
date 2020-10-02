@@ -75,33 +75,39 @@
       <div class="container">
         <h1 class="text-center mb-4">Top Headline News</h1>
         <div class="filtr-controls text-center lead text-uppercase mb-3">
-          <span id="countryName"
+          <span id="all"
             class="active d-inline-block mx-3 py-1 position-relative"
             data-filter="all"
             ><a href="javascript:loadByCategory('all')">all</a>
           </span>
-          <span
+        <span id="covid19" class="d-inline-block mx-3 py-1 position-relative"><a
+                href="javascript:loadByCategory('covid19')">covid 19</a>
+        </span>
+          <span id="business"
             class="d-inline-block mx-3 py-1 position-relative"
-            data-filter="1"
+            
             ><a href="javascript:loadByCategory('business')">business</a>
           </span>
-          <span
+          <span id="entertainment"
             class="d-inline-block mx-3 py-1 position-relative"
-            data-filter="2"
+            
             ><a href="javascript:loadByCategory('entertainment')">entertainment</a> 
           </span>
-          <span
+          <span id="general"
             class="d-inline-block mx-3 py-1 position-relative"
-            data-filter="3"
+            
             ><a href="javascript:loadByCategory('general')">general</a> 
           </span>
-        <span class="d-inline-block mx-3 py-1 position-relative" data-filter="4">
-            <a href="javascript:loadByCategory('health science')">health science</a>
+        <span id="health" class="d-inline-block mx-3 py-1 position-relative">
+            <a href="javascript:loadByCategory('health')">health</a>
         </span>
-        <span class="d-inline-block mx-3 py-1 position-relative" data-filter="5">
+        <span id="science" class="d-inline-block mx-3 py-1 position-relative">
+            <a href="javascript:loadByCategory('science')">science</a>
+        </span>
+        <span id="sports" class="d-inline-block mx-3 py-1 position-relative">
             <a href="javascript:loadByCategory('sports')">sports</a>
         </span>
-        <span class="d-inline-block mx-3 py-1 position-relative" data-filter="6">
+        <span id="technology" class="d-inline-block mx-3 py-1 position-relative">
             <a href="javascript:loadByCategory('technology')">technology</a>
         </span>
         </div>

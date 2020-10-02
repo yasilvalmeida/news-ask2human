@@ -1,4 +1,4 @@
-var category = "all",
+var last_category = "all",
   country = "in",
   region = "India";
 $(() => {
@@ -7,21 +7,25 @@ $(() => {
     (response) => {
       country = response.country;
       region = response.region;
-      $("#countryName").html(region);
+      $("#all").html(region);
       loadNews();
     },
     "jsonp"
   );
 });
 loadNews = () => {
-  if (category == "all") loadByCountry();
+  if (last_category == "all") loadByCountry();
   else loadByCategory(category);
 };
 loadByCategory = (category) => {
+  $("#" + last_category).removeClass("active");
+  $("#" + category).addClass("active");
+  last_category = category;
   var formData = new FormData(),
     newsContent = $("#newsContent");
   newsContent.html("<img src='assets/img/loading.gif' />");
-  formData.append("category", category.toLowerCase());
+  category = category.toLowerCase();
+  formData.append("category", category);
   $.ajax({
     type: "post",
     url: "ajax/news-loader-by-category.php",
