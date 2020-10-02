@@ -93,7 +93,7 @@ loadByCategory = (category) => {
                 title +
                 '</h5><h6 class="m-0">' +
                 publishedAt +
-                '</h6></div><img class="img-fluid card-img w-100 h-80 d-block rounded-0" src="' +
+                '</h6></div><img style="height: 230px" src="' +
                 urlToImage +
                 '" /><div class="card-body"><p class="card-text"><b>Source: </b>' +
                 source +
