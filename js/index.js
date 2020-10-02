@@ -84,12 +84,8 @@ loadByCategory = (category) => {
               publishedAt = convertDate(article.publishedAt.split("T")[0]),
               source = article.source.name,
               urlToImage = article.urlToImage,
-              url = article.url,
-              description =
-                description != null
-                  ? article.description.substring(0, 350)
-                  : "";
-            if (urlToImage != null && description != null) {
+              url = article.url;
+            if (urlToImage != null) {
               htmlContent +=
                 '<div class="col-md-6 col-lg-4 filtr-item" data-category="' +
                 category +
@@ -99,9 +95,7 @@ loadByCategory = (category) => {
                 publishedAt +
                 '</h6></div><img class="img-fluid card-img w-100 h-80 d-block rounded-0" src="' +
                 urlToImage +
-                '" /><div class="card-body"><p class="card-text">' +
-                description +
-                '</p><p class="card-text"><b>Source: </b>' +
+                '" /><div class="card-body"><p class="card-text"><b>Source: </b>' +
                 source +
                 '</p></div><div class="d-flex card-footer"><a href="' +
                 url +
