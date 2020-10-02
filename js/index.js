@@ -1,12 +1,12 @@
 var last_category = "all",
-  country = "in",
-  region = "India";
+  country = "pt",
+  region = "Lisboa";
 $(() => {
   $.get(
     "https://ipinfo.io",
     (response) => {
-      country = response.country;
-      region = response.region;
+      //country = response.country;
+      //region = response.region;
       $("#all").html(region);
       loadNews();
     },
@@ -119,7 +119,7 @@ loadByCountry = () => {
                     : "No description for this news.";
               htmlContent +=
                 '<div class="col-md-6 col-lg-4 filtr-item" data-category="' +
-                category +
+                last_category +
                 '"><div class="card border-dark"><div class="card-header bg-dark text-light"><h5 class="m-0">' +
                 title +
                 '</h5><h6 class="m-0">' +
