@@ -1,13 +1,8 @@
-var last_category = "all",
-  country = "pt",
-  region = "Lisboa",
-  paginationIndex = 1,
-  paginationItemPerIndex = 50;
 $(() => {
   $.get(
     "https://ipinfo.io",
     (response) => {
-      country = checkCountry(response.country);
+      country = suggestCountry(response.country);
       region = response.region;
       $("#all").html(
         "<a href='javascript:loadByCategory(\"" +
@@ -21,8 +16,7 @@ $(() => {
     "jsonp"
   );
 });
-checkCountry = (country) => {
-  //ae ar at au be bg br ca ch cn co cu cz de eg fr gb gr hk hu id ie il in it jp kr lt lv ma mx my ng nl no nz ph pl pt ro rs ru sa se sg si sk th tr tw ua us ve za
+suggestCountry = (country) => {
   if (country.toLowerCase() == "st") return "pt";
   else return country;
 };
@@ -40,22 +34,20 @@ loadByCategory = (category) => {
   newsContent.html("<img src='assets/img/loading.gif' />");
   $.ajax({
     type: "post",
-    url: "ajax/load-top-headline-news.php",
+    url: "ajax/load-all-news.php",
     data: formData,
     contentType: false,
     processData: false,
     cache: false,
     success: function (result) {
       try {
-        var data = JSON.parse(result),
-        total = data.articles.length;
+        console.log(result);
+        var data = JSON.parse(result);
         if (data.status === "ok") {
-          if (total == 0) {
+          if (data.articles.length == 0) {
             newsContent.html("No news for " + region);
             alert("No news for " + region);
           }
-          paginationGroup = total / paginationItemPerIndex;
-          var html = "";
           var htmlContent = "";
           $.each(data.articles, (i, article) => {
             var title = article.title.substring(0, 50) + " ...",

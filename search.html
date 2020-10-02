@@ -60,11 +60,16 @@
           <ul class="nav navbar-nav ml-auto" style="color: rgb(0, 0, 0)">
             <li class="nav-item" role="presentation">
               <a
-                class="nav-link active"
+                class="nav-link"
                 data-bs-hover-animate="tada"
                 href="index.html"
               >
                 Top Headline
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" data-bs-hover-animate="tada" href="search.html">
+                Search News
               </a>
             </li>
           </ul>
@@ -73,49 +78,73 @@
     </nav>
     <section class="py-5">
       <div class="container">
-        <!--h1 class="text-center mb-4">Top Headline News</h1-->
-        <div class="filtr-controls text-center lead text-uppercase mb-3">
-          <span id="all"
-            class="active d-inline-block mx-3 py-1 position-relative"
-            data-filter="all"
-            >
-          </span>
-          <span id="business"
-            class="d-inline-block mx-3 py-1 position-relative"
-            
-            ><a href="javascript:loadByCategory('business')">business</a>
-          </span>
-          <span id="entertainment"
-            class="d-inline-block mx-3 py-1 position-relative"
-            
-            ><a href="javascript:loadByCategory('entertainment')">entertainment</a> 
-          </span>
-          <span id="general"
-            class="d-inline-block mx-3 py-1 position-relative"
-            
-            ><a href="javascript:loadByCategory('general')">general</a> 
-          </span>
-          <span id="health" class="d-inline-block mx-3 py-1 position-relative">
-              <a href="javascript:loadByCategory('health')">health</a>
-          </span>
-          <span id="science" class="d-inline-block mx-3 py-1 position-relative">
-              <a href="javascript:loadByCategory('science')">science</a>
-          </span>
-          <span id="sports" class="d-inline-block mx-3 py-1 position-relative">
-              <a href="javascript:loadByCategory('sports')">sports</a>
-          </span>
-          <span id="technology" class="d-inline-block mx-3 py-1 position-relative">
-              <a href="javascript:loadByCategory('technology')">technology</a>
-          </span>
+        <h1 class="text-center mb-4">News</h1>
+        <div class="text-center">
+          <div class="form-inline text-center mb-3">
+            <table>
+              <tr>
+                <td><label for="query" style="margin-right: 5px;">Query: </label></td>
+                <td><input type="text" name="query" id="query" /></td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="from" style="margin-left: 5px; margin-right: 5px;">From: </label>
+                </td>
+                <td>
+                  <input type="date" name="from" id="from" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="to" style="margin-left: 5px; margin-right: 5px;">to: </label>
+                </td>
+                <td>
+                  <input type="date" name="to" id="to" />
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
         <div id="newsContent" class="row filtr-container">
           <!-- Load news using ajax news api -->
         </div>
-        <div id="paginationContent">
-          <!-- Load pagination -->
-        </div>
       </div>
-      
+      <div
+        style="
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 40%;
+        "
+      >
+        <!--nav style="margin: auto; padding-top: 10px; padding-left: 15px">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">
+                  <i class="fas fa-arrow-alt-circle-left"></i>
+                </span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">
+                  <i class="fas fa-arrow-circle-right"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </nav-->
+      </div>
     </section>
     <footer class="border-dark shadow" style="background-color: #ffffff">
       <div>
@@ -176,6 +205,6 @@
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/search.js"></script>
   </body>
 </html>
