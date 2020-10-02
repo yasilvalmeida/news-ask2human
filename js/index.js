@@ -37,6 +37,8 @@ loadByCategory = (category) => {
     newsContent = $("#newsContent");
   formData.append("category", category.toLowerCase());
   formData.append("country", country.toLowerCase());
+  formData.append("paginationIndex", paginationIndex);
+  formData.append("paginationItemPerIndex", paginationItemPerIndex);
   newsContent.html("<img src='assets/img/loading.gif' />");
   $.ajax({
     type: "post",
@@ -58,30 +60,30 @@ loadByCategory = (category) => {
           console.log(total);
           console.log(paginationGroup);
           var htmlPagination =
-            '<nav style="margin-left: 50px; margin-top: 20px"><ul class="pagination"><li class="page-item"><a class="page-link" href="javascript:prev()" aria-label="Previous"><span aria-hidden="true"><i class="fas fa-arrow-alt-circle-left"></i></span></a></li>';
+            '<nav style="margin-left: 50px; margin-top: 20px"><ul class="pagination"><li class="page-item"><a class="page-link" href="javascript:loadPrev()" aria-label="Previous"><span aria-hidden="true"><i class="fas fa-arrow-alt-circle-left"></i></span></a></li>';
           for (var i = 1; i <= paginationGroup; i++) {
             if (paginationIndex == i)
               htmlPagination +=
-                '<li class="page-item active"><a class="page-link" href="javascript:Load(' +
+                '<li class="page-item active"><a class="page-link" href="javascript:loadAt(' +
                 i +
                 ')">' +
                 i +
                 "</a></li>";
             else
               htmlPagination +=
-                '<li class="page-item"><a class="page-link" href="javascript:Load(' +
+                '<li class="page-item"><a class="page-link" href="javascript:loadAt(' +
                 i +
                 ')">' +
                 i +
                 "</a></li>";
           }
           htmlPagination +=
-            '<li class="page-item"><a class="page-link" href="javascript:next()" aria-label="Next"><span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span></a></li></ul></nav>';
+            '<li class="page-item"><a class="page-link" href="javascript:loadNext()" aria-label="Next"><span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span></a></li></ul></nav>';
           var htmlContent = "";
           $("#paginationContent").html(htmlPagination);
           $.each(data.articles, (i, article) => {
             var title = article.title.substring(0, 50) + " ...",
-              publishedAt = convertDate(article.publishedAt.split("T")[0]),
+              publishedAt = article.publishedAt.split("T")[0],//convertDate(article.publishedAt.split("T")[0]),
               source = article.source.name,
               urlToImage = article.urlToImage,
               url = article.url;
@@ -112,6 +114,9 @@ loadByCategory = (category) => {
     },
   });
 };
+loadNext = () => {};
+loadAt = () => {};
+loadPrev = () => {};
 convertDate = (inputFormat) => {
   pad = (s) => {
     return s < 10 ? "0" + s : s;
