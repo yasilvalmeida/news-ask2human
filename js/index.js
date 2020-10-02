@@ -124,9 +124,9 @@ loadByIndex = (category) => {
                 publishedAt +
                 '</h6></div><img style="height: 230px" src="' +
                 urlToImage +
-                '" /><div class="card-body"><p class="card-text"><b>Source: </b>' +
+                '" /><div style="padding-top: 0px; padding-left: 20px; padding-bottom: 0px;"><b>Source: </b>' +
                 source +
-                '</p></div><div class="d-flex card-footer"><a href="' +
+                '</div><div class="d-flex card-footer"><a href="' +
                 url +
                 '" target="_blank" class="btn btn-dark btn-sm" type="button"><i class="fa fa-eye"></i>&nbsp;Read more</a></div></div></div>';
             }
