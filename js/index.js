@@ -2,7 +2,7 @@ var last_category = "all",
   country = "pt",
   region = "Lisboa",
   paginationIndex = 1,
-  paginationItemPerIndex = 50;
+  paginationItemPerIndex = 10;
 $(() => {
   $.get(
     "https://ipinfo.io",
@@ -48,20 +48,40 @@ loadByCategory = (category) => {
     success: function (result) {
       try {
         var data = JSON.parse(result),
-        total = data.articles.length;
+          total = data.articles.length;
         if (data.status === "ok") {
           if (total == 0) {
             newsContent.html("No news for " + region);
             alert("No news for " + region);
           }
-          paginationGroup = total / paginationItemPerIndex;
-          var html = "";
+          paginationGroup = Math.ceil(total / paginationItemPerIndex);
+          console.log(total);
+          console.log(paginationGroup);
+          var htmlPagination =
+            '<nav style="margin-left: 50px; margin-top: 20px"><ul class="pagination"><li class="page-item"><a class="page-link" href="javascript:prev()" aria-label="Previous"><span aria-hidden="true"><i class="fas fa-arrow-alt-circle-left"></i></span></a></li>';
+          for (var i = 1; i <= paginationGroup; i++) {
+            if (paginationIndex == i)
+              htmlPagination +=
+                '<li class="page-item active"><a class="page-link" href="javascript:Load(' +
+                i +
+                ')">' +
+                i +
+                "</a></li>";
+            else
+              htmlPagination +=
+                '<li class="page-item"><a class="page-link" href="javascript:Load(' +
+                i +
+                ')">' +
+                i +
+                "</a></li>";
+          }
+          htmlPagination +=
+            '<li class="page-item"><a class="page-link" href="javascript:next()" aria-label="Next"><span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span></a></li></ul></nav>';
           var htmlContent = "";
+          $("#paginationContent").html(htmlPagination);
           $.each(data.articles, (i, article) => {
             var title = article.title.substring(0, 50) + " ...",
-              publishedAt = article.publishedAt
-                .replace("T", " at ")
-                .replace("Z", ""),
+              publishedAt = convertDate(article.publishedAt.split("T")[0]),
               source = article.source.name,
               urlToImage = article.urlToImage,
               url = article.url,
@@ -97,4 +117,11 @@ loadByCategory = (category) => {
       }
     },
   });
+};
+convertDate = (inputFormat) => {
+  pad = (s) => {
+    return s < 10 ? "0" + s : s;
+  };
+  var d = new Date(inputFormat);
+  return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("-");
 };
