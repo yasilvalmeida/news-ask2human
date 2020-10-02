@@ -5,8 +5,8 @@ $(() => {
   $.get(
     "https://ipinfo.io",
     (response) => {
-      //country = response.country;
-      //region = response.region;
+      country = response.country;
+      region = response.region;
       $("#all").html(region);
       loadNews();
     },
