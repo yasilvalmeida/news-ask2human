@@ -7,7 +7,7 @@
     $query = "
             select *
             from tcountry
-            order by name;
+            order by code;
     ";
     $result = $mysql->query($connection, $query); 
     $num = mysqli_num_rows($result);

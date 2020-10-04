@@ -32,6 +32,11 @@
                                 Country
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="category.php" style="font-weight: bord; color: #fff;">
+                                Category
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a id="menu" class="nav-link dropdown-toggle" href="#" id="navbarDropdown"  style="font-weight: bord; color: #fff;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">

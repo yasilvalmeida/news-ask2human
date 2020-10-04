@@ -1,30 +1,137 @@
 var last_category = "all",
-  country = "pt",
-  region = "Lisboa",
+  country_code = "",
+  country_name = "",
   paginationIndex = 1,
-  paginationItemPerIndex = 10;
+  paginationItemPerIndex = 10,
+  countries = null,
+  categories = null;
 $(() => {
+  loadCategories();
+  loadCountries();
+});
+
+loadCategories = () => {
+  var formData = new FormData(),
+    categoryContent = $("#categoryContent");
+  categoryContent.html("<img src='assets/img/loading.gif' />");
+  $.ajax({
+    type: "post",
+    url: "ajax/load-category.php",
+    data: formData,
+    contentType: false,
+    processData: false,
+    cache: false,
+    success: function (result) {
+      try {
+        var data = JSON.parse(result),
+          htmlCategory = "";
+        categories = data.categories;
+        $.each(data.categories, (i, category) => {
+          if (category.code == "all") {
+            htmlCategory +=
+              '<span id="' +
+              category.code +
+              '" class="d-inline-block mx-3 py-1 position-relative" style="font-weight: bold;"><a href="javascript:loadByCategory(' +
+              category.id +
+              ')"></a></span>';
+          } else {
+            htmlCategory +=
+              '<span id="' +
+              category.code +
+              '" class="d-inline-block mx-3 py-1 position-relative" style="font-weight: bold;"><a href="javascript:loadByCategory(' +
+              category.id +
+              ')">' +
+              category.name +
+              "</a></span>";
+          }
+        });
+        categoryContent.html(htmlCategory);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+};
+loadCountries = () => {
+  var formData = new FormData(),
+    countryContent = $("#countryContent");
+  countryContent.html("<img src='assets/img/loading.gif' />");
+  $.ajax({
+    type: "post",
+    url: "ajax/load-country.php",
+    data: formData,
+    contentType: false,
+    processData: false,
+    cache: false,
+    success: function (result) {
+      try {
+        var data = JSON.parse(result),
+          htmlCountry =
+            "<select id='country-select' style='margin-left:10px;' class='form-control'>";
+        countries = data.countries;
+        getUserCountry();
+        $.each(data.countries, (i, country) => {
+          htmlCountry +=
+            '<option value="' +
+            country.code +
+            '">' +
+            country.name +
+            "</option>";
+        });
+        htmlCountry += "</select>";
+        countryContent.html(htmlCountry);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+};
+getUserCountry = () => {
   $.get(
     "https://ipinfo.io",
     (response) => {
-      country = checkCountry(response.country);
-      region = response.region;
-      $("#all").html(
-        "<a href='javascript:loadByCategory(\"" +
-          last_category +
-          "\")'>" +
-          region +
-          "</a>"
-      );
-      loadNews();
+      var found = false;
+      $.each(countries, (i, country) => {
+        if (response.country.toLowerCase() == country.code.toLowerCase()) {
+          country_id = country.id;
+          country_name = country.name;
+          found = true;
+          return;
+        }
+      });
+      if (found) {
+        $("#all").html(
+          "<a href='javascript:loadByCategory(\"" +
+            last_category +
+            "\")'>" +
+            country_name +
+            "</a>"
+        );
+        loadNews();
+      } else {
+        $("#country-modal-paragraph").html(
+          "We apologize for any inconvenience, but we are unable to provide news from <b>" +
+            response.region +
+            "</b>. Please choose another country in the drop down list."
+        );
+        $("#countryModal").modal("show");
+      }
     },
     "jsonp"
   );
-});
-checkCountry = (country) => {
-  //ae ar at au be bg br ca ch cn co cu cz de eg fr gb gr hk hu id ie il in it jp kr lt lv ma mx my ng nl no nz ph pl pt ro rs ru sa se sg si sk th tr tw ua us ve za
-  if (country.toLowerCase() == "st") return "pt";
-  else return country;
+};
+selectCountry = () => {
+  country_code = $("#country-select option:selected").val();
+  country_name = $("#country-select option:selected").text();
+  $("#all").html(
+    "<a href='javascript:loadByCategory(\"" +
+    last_category +
+    "\")'>" +
+    country_name +
+    "</a>"
+  );
+  $("#countryModal").modal("hide");
+  loadNews();
 };
 loadNews = () => {
   loadByCategory(last_category);
@@ -37,9 +144,17 @@ loadByCategory = (category) => {
   computePageGroup(category);
 };
 computePageGroup = (category) => {
+  var category_id = -1,
+    country_id = -1;
+  $.each(categories, (i, c) => {
+    if (category == c.code) category_id = c.id;
+  });
+  $.each(countries, (i, c) => {
+    if (country_code == c.code) country_id = c.id;
+  });
   var formData = new FormData();
-  formData.append("category", category.toLowerCase());
-  formData.append("country", country.toLowerCase());
+  formData.append("categoryId", category_id);
+  formData.append("countryId", country_id);
   $.ajax({
     type: "post",
     url: "ajax/count-top-headline-news.php",
@@ -50,7 +165,7 @@ computePageGroup = (category) => {
     success: function (result) {
       try {
         var data = JSON.parse(result),
-          total = data.articles.length;
+          total = data.total;
         paginationGroup = Math.ceil(total / paginationItemPerIndex);
         paginationDraw();
         loadByIndex(category);
@@ -85,9 +200,18 @@ paginationDraw = () => {
 };
 loadByIndex = (category) => {
   var formData = new FormData(),
-    newsContent = $("#newsContent");
-  formData.append("category", category.toLowerCase());
-  formData.append("country", country.toLowerCase());
+    newsContent = $("#newsContent"),
+    category_id = -1,
+    country_id = -1;
+  $.each(categories, (i, c) => {
+    if (category == c.code) category_id = c.id;
+  });
+  $.each(countries, (i, c) => {
+    if (country_code == c.code) country_id = c.id;
+  });
+  console.log(paginationIndex);
+  formData.append("categoryId", category_id);
+  formData.append("countryId", country_id);
   formData.append("paginationIndex", paginationIndex);
   formData.append("paginationItemPerIndex", paginationItemPerIndex);
   newsContent.html("<img src='assets/img/loading.gif' />");
@@ -100,41 +224,33 @@ loadByIndex = (category) => {
     cache: false,
     success: function (result) {
       try {
-        var data = JSON.parse(result),
-          total = data.articles.length,
+        var data = JSON.parse(result).articles,
           htmlContent = "";
-        if (data.status === "ok") {
-          if (total == 0) {
-            newsContent.html("No news for " + region);
-            alert("No news for " + region);
+        $.each(data, (i, article) => {
+          //console.log(article);
+          var title = article.title.substring(0, 50) + " ...",
+            publishedAt = convertDate(article.date),
+            source = article.source,
+            urlToImage = article.image,
+            url = article.url;
+          if (urlToImage != null) {
+            htmlContent +=
+              '<div class="col-md-6 col-lg-4 filtr-item" data-category="' +
+              category +
+              '"><div class="card border-dark"><div class="card-header bg-dark text-light"><h5 class="m-0">' +
+              title +
+              '</h5><h6 class="m-0">' +
+              publishedAt +
+              '</h6></div><img style="height: 230px" src="' +
+              urlToImage +
+              '" /><div style="padding-top: 0px; padding-left: 20px; padding-bottom: 0px;"><b>Source: </b>' +
+              source +
+              '</div><div class="d-flex card-footer"><a href="' +
+              url +
+              '" target="_blank" class="btn btn-dark btn-sm" type="button"><i class="fa fa-eye"></i>&nbsp;Read more</a></div></div></div>';
           }
-          $.each(data.articles, (i, article) => {
-            var title = article.title.substring(0, 50) + " ...",
-              publishedAt = convertDate(article.publishedAt.split("T")[0]),
-              source = article.source.name,
-              urlToImage = article.urlToImage,
-              url = article.url;
-            if (urlToImage != null) {
-              htmlContent +=
-                '<div class="col-md-6 col-lg-4 filtr-item" data-category="' +
-                category +
-                '"><div class="card border-dark"><div class="card-header bg-dark text-light"><h5 class="m-0">' +
-                title +
-                '</h5><h6 class="m-0">' +
-                publishedAt +
-                '</h6></div><img style="height: 230px" src="' +
-                urlToImage +
-                '" /><div style="padding-top: 0px; padding-left: 20px; padding-bottom: 0px;"><b>Source: </b>' +
-                source +
-                '</div><div class="d-flex card-footer"><a href="' +
-                url +
-                '" target="_blank" class="btn btn-dark btn-sm" type="button"><i class="fa fa-eye"></i>&nbsp;Read more</a></div></div></div>';
-            }
-          });
-          newsContent.html(htmlContent);
-        } else {
-          newsContent.html(data.resp);
-        }
+        });
+        newsContent.html(htmlContent);
       } catch (error) {
         console.log(error);
       }

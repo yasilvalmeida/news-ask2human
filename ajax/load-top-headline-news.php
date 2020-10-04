@@ -1,21 +1,36 @@
 <?php
     if (isset($_POST['paginationIndex']) && 
     isset($_POST['paginationItemPerIndex']) && 
-    isset($_POST['country']) && 
-    isset($_POST['category'])) {
-        $paginationIndex = $_POST["paginationIndex"];
-        $paginationItemPerIndex = $_POST["paginationItemPerIndex"];
-        $country = $_POST["country"];
-        $category = $_POST["category"];
-        //$api_key = "c91b92a7592e470a9e37d12ed5b5bf8e";
-        if ($category == "general")
-            $url = "https://newsapi.org/v2/top-headlines?page=".$paginationIndex."&pageSize=".$paginationItemPerIndex."&category=".$category."&apiKey=".$api_key;
-        else if ($category != "all")
-            $url = "https://newsapi.org/v2/top-headlines?page=".$paginationIndex."&pageSize=".$paginationItemPerIndex."&country=".$country."&category=".$category."&apiKey=".$api_key;
-        else
-            $url = "https://newsapi.org/v2/top-headlines?page=".$paginationIndex."&pageSize=".$paginationItemPerIndex."&country=".$country."&apiKey=".$api_key;
-        $response = file_get_contents($url);
-        echo $response;
+    isset($_POST['countryId']) && 
+    isset($_POST['categoryId'])) {
+        $offset = (intval($_POST["paginationIndex"]) - 1) * intval($_POST["paginationItemPerIndex"]);
+        $limit = intval($_POST["paginationItemPerIndex"]);
+        $countryId = $_POST["countryId"];
+        $categoryId = $_POST["categoryId"];
+        require("../admin/ajax/mysql.php");
+        $mysql = new MySQL();
+        $connection = $mysql->connect();
+        $query = "
+                select n.title, n.date, n.image, n.url, lower(n.source) as source
+                from tnews n
+                where n.tcountryid = $countryId and n.tcategoryid = $categoryId
+                order by n.date desc
+                limit $offset, $limit;
+                ";
+        $result = $mysql->query($connection, $query); 
+        $articles = array();
+        while($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+        {
+            $articles[] = array
+            (
+                "title" => $row["title"], 
+                "date" => $row["date"], 
+                "image" => $row["image"], 
+                "url" => $row["url"], 
+                "source" => $row["source"]
+            );
+        }
+        echo json_encode(array('articles' => $articles));
     }
     else echo json_encode(array('resp' => "No parameter"));
 ?>

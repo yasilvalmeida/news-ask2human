@@ -7,7 +7,7 @@
         <?php
             require("cmp/head.php");
         ?>
-        <title>News A2H CMS | Countries</title>
+        <title>News A2H CMS | Categories</title>
     </head>
     <body>
         <div>
@@ -32,8 +32,8 @@
                                 Country
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="category.php" style="font-weight: bord; color: #fff;">
+                        <li class="nav-item active">
+                            <a class="nav-link active" href="category.php" style="font-weight: bord; color: #fff;">
                                 Category
                             </a>
                         </li>
@@ -57,7 +57,7 @@
                     <div class="card-deck mb-3 text-left">
                         <div class="card mb-4 box-shadow">
                             <div class="card-header">
-                                <h4 class="my-0 font-weight-normal">Country Page</h4>
+                                <h4 class="my-0 font-weight-normal">Category Page</h4>
                             </div>
                             <div class="card-body">
                                 <div class="card-body">
@@ -69,8 +69,6 @@
                                             <!-- Begin Level Loader -->
                                             <div class="card-deck mb-3 text-left">
                                                 <div class="col-sm-12">
-                                                    <a href="javascript:save()" class="btn btn-success"><i class="far fa-save"></i></a>
-                                                    <br />
                                                     <table class="table table-responsive table-striped">
                                                         <thead class="thead-light">
                                                             <tr>
@@ -80,7 +78,7 @@
                                                                 <th scopre="col" style="text-align: center;"><i class='far fa-edit'></i></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="country-content">
+                                                        <tbody id="category-content">
                                                             <!-- Load using AJAX -->
                                                         </tbody>
                                                     </table>
@@ -100,19 +98,19 @@
             require("cmp/footer.php");
             require("cmp/modal.php");
         ?>
-        <!-- Begin Country Dialog -->
+        <!-- Begin Category Dialog -->
         <!-- Insert Modal-->
-        <div class="modal fade" id="country-insert-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="category-insert-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">New country</h5>
+                        <h5 class="modal-title">New category</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="country-insert-form">
+                        <form id="category-insert-form">
                             <table style="width: 430px">
                                 <tr>
                                     <td>
@@ -140,33 +138,33 @@
                                 </tr>
                             </table>
                             <hr />
-                            <div id="country-insert-state" class="" role="alert">
+                            <div id="category-insert-state" class="" role="alert">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-success" href="javascript:country_insert_async()">Save</a>
+                        <a class="btn btn-success" href="javascript:category_insert_async()">Save</a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Update Modal-->
-        <div class="modal fade" id="country-update-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="category-update-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Update country</h5>
+                        <h5 class="modal-title">Update category</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="country-update-form">
+                        <form id="category-update-form">
                             <table style="width: 430px">
                                 <tr>
                                     <td colspan="2">
-                                        <input type="hidden" id="country-update-id" />
+                                        <input type="hidden" id="category-update-id" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -195,24 +193,24 @@
                                 </tr>
                             </table>
                             <hr />
-                            <div id="country-update-state" class="" role="alert">
+                            <div id="category-update-state" class="" role="alert">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-success" href="javascript:country_update_async()">Update</a>
+                        <a class="btn btn-success" href="javascript:category_update_async()">Update</a>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- End Country Dialog -->
+        <!-- End Category Dialog -->
     </body>
     <?php
         require("cmp/script.php");
     ?>
     <!-- Js -->
     <script src="js/main.js"></script>
-    <script src="js/country.js"></script>
+    <script src="js/category.js"></script>
 </html>
 
