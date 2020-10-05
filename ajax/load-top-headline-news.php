@@ -10,20 +10,31 @@
         require("../admin/ajax/mysql.php");
         $mysql = new MySQL();
         $connection = $mysql->connect();
-        $query = "
+        if ($categoryId != 11) {
+            $query = "
                 select n.title, n.date, n.image, n.url, lower(n.source) as source
                 from tnews n
                 where n.tcountryid = $countryId and n.tcategoryid = $categoryId
                 order by n.date desc
                 limit $offset, $limit;
                 ";
+        }
+        else {
+            $query = "
+                select n.title, n.date, n.image, n.url, lower(n.source) as source
+                from tnews n
+                where n.tcategoryid = $categoryId
+                order by n.date desc
+                limit $offset, $limit;
+                ";
+        }
         $result = $mysql->query($connection, $query); 
         $articles = array();
         while($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
         {
             $articles[] = array
             (
-                "title" => $row["title"], 
+                "title" => verifyTittle($row["title"]), 
                 "date" => $row["date"], 
                 "image" => $row["image"], 
                 "url" => $row["url"], 
@@ -33,4 +44,7 @@
         echo json_encode(array('articles' => $articles));
     }
     else echo json_encode(array('resp' => "No parameter"));
+    function verifyTittle($title) {
+        return substr($title, 0, 50)."...";
+    }
 ?>

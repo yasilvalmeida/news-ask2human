@@ -29,18 +29,18 @@ loadCategories = () => {
         $.each(data.categories, (i, category) => {
           if (category.code == "all") {
             htmlCategory +=
-              '<span id="' +
+              "<span id='" +
               category.code +
-              '" class="d-inline-block mx-3 py-1 position-relative" style="font-weight: bold;"><a href="javascript:loadByCategory(' +
-              category.id +
-              ')"></a></span>';
+              "' class='d-inline-block mx-3 py-1 position-relative' style='font-weight: bold;'><a href='javascript:loadByCategory(\"" +
+              category.code +
+              "\")'></a></span>";
           } else {
             htmlCategory +=
-              '<span id="' +
+              "<span id='" +
               category.code +
-              '" class="d-inline-block mx-3 py-1 position-relative" style="font-weight: bold;"><a href="javascript:loadByCategory(' +
-              category.id +
-              ')">' +
+              "' class='d-inline-block mx-3 py-1 position-relative' style='font-weight: bold;'><a href='javascript:loadByCategory(\"" +
+              category.code +
+              "\")'>" +
               category.name +
               "</a></span>";
           }
@@ -125,10 +125,10 @@ selectCountry = () => {
   country_name = $("#country-select option:selected").text();
   $("#all").html(
     "<a href='javascript:loadByCategory(\"" +
-    last_category +
-    "\")'>" +
-    country_name +
-    "</a>"
+      last_category +
+      "\")'>" +
+      country_name +
+      "</a>"
   );
   $("#countryModal").modal("hide");
   loadNews();
@@ -209,7 +209,6 @@ loadByIndex = (category) => {
   $.each(countries, (i, c) => {
     if (country_code == c.code) country_id = c.id;
   });
-  console.log(paginationIndex);
   formData.append("categoryId", category_id);
   formData.append("countryId", country_id);
   formData.append("paginationIndex", paginationIndex);
@@ -224,31 +223,29 @@ loadByIndex = (category) => {
     cache: false,
     success: function (result) {
       try {
+        if (category == "general" && country_code == "in") console.log(result);
         var data = JSON.parse(result).articles,
           htmlContent = "";
         $.each(data, (i, article) => {
-          //console.log(article);
-          var title = article.title.substring(0, 50) + " ...",
+          var title = article.title,
             publishedAt = convertDate(article.date),
             source = article.source,
             urlToImage = article.image,
             url = article.url;
-          if (urlToImage != null) {
-            htmlContent +=
-              '<div class="col-md-6 col-lg-4 filtr-item" data-category="' +
-              category +
-              '"><div class="card border-dark"><div class="card-header bg-dark text-light"><h5 class="m-0">' +
-              title +
-              '</h5><h6 class="m-0">' +
-              publishedAt +
-              '</h6></div><img style="height: 230px" src="' +
-              urlToImage +
-              '" /><div style="padding-top: 0px; padding-left: 20px; padding-bottom: 0px;"><b>Source: </b>' +
-              source +
-              '</div><div class="d-flex card-footer"><a href="' +
-              url +
-              '" target="_blank" class="btn btn-dark btn-sm" type="button"><i class="fa fa-eye"></i>&nbsp;Read more</a></div></div></div>';
-          }
+          htmlContent +=
+            '<div class="col-md-6 col-lg-4 filtr-item" data-category="' +
+            category +
+            '"><div class="card border-dark"><div class="card-header bg-dark text-light"><h5 class="m-0">' +
+            title +
+            '</h5><h6 class="m-0">' +
+            publishedAt +
+            '</h6></div><img style="height: 230px" src="' +
+            urlToImage +
+            '" /><div style="padding-top: 0px; padding-left: 20px; padding-bottom: 0px;"><b>Source: </b>' +
+            source +
+            '</div><div class="d-flex card-footer"><a href="' +
+            url +
+            '" target="_blank" class="btn btn-dark btn-sm" type="button"><i class="fa fa-eye"></i>&nbsp;Read more</a></div></div></div>';
         });
         newsContent.html(htmlContent);
       } catch (error) {
