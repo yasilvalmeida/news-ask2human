@@ -9,7 +9,16 @@ $(() => {
   loadCategories();
   loadCountries();
 });
-
+contactUs = () => {
+  goBottom();
+};
+goBottom = () => {
+  window.scrollTo(0, document.body.scrollHeight);
+};
+goTop = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+};
 loadCategories = () => {
   var formData = new FormData(),
     categoryContent = $("#categoryContent");
@@ -74,7 +83,7 @@ loadCountries = () => {
           htmlCountry +=
             '<option value="' +
             country.code +
-          '">' +
+            '">' +
             country.name +
             "</option>";
         });
@@ -265,18 +274,21 @@ loadPrev = () => {
     paginationIndex--;
     paginationDraw();
     loadByIndex(last_category);
+    goTop();
   }
 };
 loadAt = (num) => {
   paginationIndex = num;
   paginationDraw();
   loadByIndex(last_category);
+  goTop();
 };
 loadNext = () => {
   if (paginationIndex < paginationGroup) {
     paginationIndex++;
     paginationDraw();
     loadByIndex(last_category);
+    goTop();
   }
 };
 convertDate = (inputFormat) => {
