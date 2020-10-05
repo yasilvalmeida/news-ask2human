@@ -96,6 +96,16 @@ loadCountries = () => {
   });
 };
 getUserCountry = () => {
+  /*
+  var countryCodeValueStored = getCookie(cookieName);
+  // Check if this product was rated by some other client to add previous rating
+  if (countryCodeValueStored) {
+    delCookie(cookieName);
+    setCookie(cookieName, cookieValueStored + ',' + logged_username);
+  }
+  else
+    setCookie(cookieName, logged_username);
+    */
   $.get(
     "https://ipinfo.io",
     (response) => {
