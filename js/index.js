@@ -74,7 +74,7 @@ loadCountries = () => {
           htmlCountry +=
             '<option value="' +
             country.code +
-            '">' +
+          '">' +
             country.name +
             "</option>";
         });
@@ -103,7 +103,9 @@ getUserCountry = () => {
         $("#all").html(
           "<a href='javascript:loadByCategory(\"" +
             last_category +
-            "\")'>" +
+            "\")'><img src='https://www.countryflags.io/" +
+            country_code +
+            "/shiny/64.png' />" +
             country_name +
             "</a>"
         );
@@ -126,10 +128,13 @@ selectCountry = () => {
   $("#all").html(
     "<a href='javascript:loadByCategory(\"" +
       last_category +
-      "\")'>" +
+      "\")'><img src='https://www.countryflags.io/" +
+      country_code +
+      "/shiny/64.png' />" +
       country_name +
       "</a>"
   );
+
   $("#countryModal").modal("hide");
   loadNews();
 };
@@ -166,6 +171,7 @@ computePageGroup = (category) => {
       try {
         var data = JSON.parse(result),
           total = data.total;
+        //console.log(total);
         paginationGroup = Math.ceil(total / paginationItemPerIndex);
         paginationDraw();
         loadByIndex(category);
@@ -209,6 +215,7 @@ loadByIndex = (category) => {
   $.each(countries, (i, c) => {
     if (country_code == c.code) country_id = c.id;
   });
+  //alert(paginationIndex);
   formData.append("categoryId", category_id);
   formData.append("countryId", country_id);
   formData.append("paginationIndex", paginationIndex);
@@ -223,7 +230,6 @@ loadByIndex = (category) => {
     cache: false,
     success: function (result) {
       try {
-        if (category == "general" && country_code == "in") console.log(result);
         var data = JSON.parse(result).articles,
           htmlContent = "";
         $.each(data, (i, article) => {

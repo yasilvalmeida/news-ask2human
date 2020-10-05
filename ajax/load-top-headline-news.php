@@ -1,4 +1,6 @@
 <?php
+    require_once("../admin/classes/encoding.php");
+    use \ForceUTF8\Encoding;  // It's namespaced now.
     if (isset($_POST['paginationIndex']) && 
     isset($_POST['paginationItemPerIndex']) && 
     isset($_POST['countryId']) && 
@@ -30,21 +32,20 @@
         }
         $result = $mysql->query($connection, $query); 
         $articles = array();
-        while($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
-        {
-            $articles[] = array
-            (
-                "title" => verifyTittle($row["title"]), 
-                "date" => $row["date"], 
-                "image" => $row["image"], 
-                "url" => $row["url"], 
-                "source" => $row["source"]
-            );
+        while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $title = Encoding::fixUTF8($row["title"]);
+            if (strpos($title, "??")  === false) {
+                $articles[] = array
+                (
+                    "title" =>  substr($title, 0, 50)." ...", 
+                    "date" => $row["date"], 
+                    "image" => $row["image"], 
+                    "url" => $row["url"], 
+                    "source" => $row["source"]
+                );
+            }
         }
         echo json_encode(array('articles' => $articles));
     }
     else echo json_encode(array('resp' => "No parameter"));
-    function verifyTittle($title) {
-        return substr($title, 0, 50)."...";
-    }
 ?>
