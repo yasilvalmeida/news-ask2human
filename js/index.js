@@ -119,7 +119,6 @@ getUserCountry = () => {
         }
       });
       if (found) {
-        alert(country_code);
         $("#all").html(
           "<a href='javascript:loadByCategory(\"" +
             last_category +
