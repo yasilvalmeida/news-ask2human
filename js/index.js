@@ -78,7 +78,6 @@ loadCountries = () => {
           htmlCountry =
             "<select id='country-select' style='margin-left:10px;' class='form-control'>";
         countries = data.countries;
-        getUserCountry();
         $.each(data.countries, (i, country) => {
           htmlCountry +=
             '<option value="' +
@@ -89,6 +88,7 @@ loadCountries = () => {
         });
         htmlCountry += "</select>";
         countryContent.html(htmlCountry);
+        getUserCountry();
       } catch (error) {
         console.log(error);
       }
@@ -113,9 +113,9 @@ getUserCountry = () => {
       $.each(countries, (i, country) => {
         if (response.country.toLowerCase() == country.code.toLowerCase()) {
           country_id = country.id;
+          country_code = country.code;
           country_name = country.name;
           found = true;
-          return;
         }
       });
       if (found) {
