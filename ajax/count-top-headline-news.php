@@ -1,6 +1,4 @@
 <?php
-    require_once("../admin/classes/encoding.php");
-    use \ForceUTF8\Encoding;  // It's namespaced now.
     if (isset($_POST['countryId']) && isset($_POST['categoryId'])) {
         $countryId = $_POST["countryId"];
         $categoryId = $_POST["categoryId"];

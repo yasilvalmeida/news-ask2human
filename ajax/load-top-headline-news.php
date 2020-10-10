@@ -11,7 +11,7 @@
         require("../admin/classes/news.php");
         $mysql = new MySQL();
         $connection = $mysql->connect();
-        if ($categoryId != 11) {
+        if ($categoryId != 1) {
             $query = "
                 select n.title, n.date, n.image, n.url, lower(n.source) as source
                 from tnews n
@@ -35,13 +35,6 @@
         mb_internal_encoding('UTF-8');
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             $articles[] = new News($row);
-            /*( 
-                "title" =>  substr($row["title"], 0, 50)." ...", 
-                "date" => $row["date"], 
-                "image" => $row["image"], 
-                "url" => $row["url"], 
-                "source" => $row["source"]
-            ); */
         }
         echo json_encode(array('articles' => $articles), JSON_UNESCAPED_UNICODE);
     }

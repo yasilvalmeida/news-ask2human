@@ -46,7 +46,7 @@
                 $date   = explode("T", $article["publishedAt"])[0];
                 $image  = $article["urlToImage"];
                 $url    = $article["url"];
-                $source = $article["source"]["name"];
+                $source = mysqli_real_escape_string($connection, $article["source"]["name"]);
                 if ($image != "" && $url != "") {
                     $query = "
                         call sp_save_news
