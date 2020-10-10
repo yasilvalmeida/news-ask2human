@@ -6,7 +6,7 @@
             select *
             from tcountry c
             where c.state = 1
-            order by c.code asc
+            order by c.name asc
             ";
     $result = $mysql->query($connection, $query); 
     $countries = array();

@@ -1,6 +1,7 @@
 var last_category = "all",
   country_code = "",
   country_name = "",
+  country_flag = "",
   paginationIndex = 1,
   paginationItemPerIndex = 50,
   total = 0,
@@ -10,9 +11,6 @@ $(() => {
   loadCategories();
   loadCountries();
 });
-contactUs = () => {
-  goBottom();
-};
 goBottom = () => {
   window.scrollTo(0, document.body.scrollHeight);
 };
@@ -114,7 +112,8 @@ getUserCountry = () => {
       $.each(countries, (i, country) => {
         if (response.country.toLowerCase() == country.code.toLowerCase()) {
           country_id = country.id;
-          country_code = country.code;
+          country_code = country_code.toLocaleLowerCase();
+          country_flag = country_code == "ch" ? "cn" : country_code;
           country_name = country.name;
           found = true;
         }
@@ -124,7 +123,7 @@ getUserCountry = () => {
           "<a href='javascript:loadByCategory(\"" +
             last_category +
             "\")'><img src='https://www.countryflags.io/" +
-            country_code +
+            country_flag +
             "/shiny/64.png' />" +
             country_name +
             "</a>"
@@ -143,13 +142,14 @@ getUserCountry = () => {
   );
 };
 selectCountry = () => {
-  country_code = $("#country-select option:selected").val();
+  country_code = $("#country-select option:selected").val().toLocaleLowerCase();
+  country_flag = country_code == "ch" ? "cn" : country_code;
   country_name = $("#country-select option:selected").text();
   $("#all").html(
     "<a href='javascript:loadByCategory(\"" +
       last_category +
       "\")'><img src='https://www.countryflags.io/" +
-      country_code +
+      country_flag +
       "/shiny/64.png' />" +
       country_name +
       "</a>"
@@ -242,7 +242,7 @@ loadByIndex = (category) => {
         var data = JSON.parse(result).articles,
           htmlContent = "";
         $.each(data, (i, article) => {
-          var title = article.title,
+          var title = article.title.substring(0, 30),
             publishedAt = convertDate(article.date),
             source = article.source,
             urlToImage = article.image,

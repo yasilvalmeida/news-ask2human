@@ -1,6 +1,4 @@
 <?php
-    require_once("../admin/classes/encoding.php");
-    use \ForceUTF8\Encoding;  // It's namespaced now.
     if (isset($_POST['paginationIndex']) && 
     isset($_POST['paginationItemPerIndex']) && 
     isset($_POST['countryId']) && 
@@ -10,6 +8,7 @@
         $countryId = $_POST["countryId"];
         $categoryId = $_POST["categoryId"];
         require("../admin/ajax/mysql.php");
+        require("../admin/classes/news.php");
         $mysql = new MySQL();
         $connection = $mysql->connect();
         if ($categoryId != 11) {
@@ -32,20 +31,20 @@
         }
         $result = $mysql->query($connection, $query); 
         $articles = array();
-        while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            $title = Encoding::fixUTF8($row["title"]);
-            if (strpos($title, "??")  === false) {
-                $articles[] = array
-                (
-                    "title" =>  substr($title, 0, 50)." ...", 
-                    "date" => $row["date"], 
-                    "image" => $row["image"], 
-                    "url" => $row["url"], 
-                    "source" => $row["source"]
-                );
-            }
+        mb_language('uni');
+        mb_internal_encoding('UTF-8');
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $articles[] = new News($row);
+            /*( 
+                "title" =>  substr($row["title"], 0, 50)." ...", 
+                "date" => $row["date"], 
+                "image" => $row["image"], 
+                "url" => $row["url"], 
+                "source" => $row["source"]
+            ); */
         }
-        echo json_encode(array('articles' => $articles));
+        echo json_encode(array('articles' => $articles), JSON_UNESCAPED_UNICODE);
     }
-    else echo json_encode(array('resp' => "No parameter"));
+    else
+        echo json_encode(array('resp' => "No parameter"));
 ?>

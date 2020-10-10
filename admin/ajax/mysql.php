@@ -14,8 +14,8 @@
 			}
 			return $connection;
 		} 
-		function query($connection, $query) 
-		{ 
+		function query($connection, $query) { 
+			mysqli_set_charset($connection, 'utf8');
 			$result = mysqli_query($connection, $query); 
 			if (!$result) 
 			{ 
@@ -25,8 +25,7 @@
 			return $result;
 		} 
 		
-		function multiquery($connection, $queries) 
-		{ 
+		function multiquery($connection, $queries) { 
 			$resp = 0;
 			foreach($queries as $query){
 				/* execute multi query */
@@ -51,8 +50,7 @@
 			mysqli_close($connection);
 			return $resp;
 		} 
-		function close($connection) 
-		{ 
+		function close($connection) { 
 			mysqli_close($connection);
 		} 
 	}

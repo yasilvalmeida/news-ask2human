@@ -1,6 +1,4 @@
 <?php
-    require_once("../admin/classes/encoding.php");
-    use \ForceUTF8\Encoding;  // It's namespaced now.
     require("../admin/ajax/mysql.php");
     $mysql = new MySQL();
     $connection = $mysql->connect();
@@ -36,7 +34,9 @@
         $categories[] = array("id" => $id, "code" => $code);
         $i++;
     }
+    $countryId;
     foreach($countries as $country) {
+        $countryId = $country["id"];
         foreach($categories as $category) {
             // Save to mysql database
             echo "Get news from ".$country["code"]." and category ".$category["code"]." ...<br/>";
@@ -82,8 +82,8 @@
                     '$url', 
                     '$image', 
                     '$source', 
-                    11, 
-                    1
+                    1, 
+                    ".$countryId."
                 );
                 ";
             $result = $mysql->query($connection, $query); 
@@ -93,8 +93,6 @@
         $api_key = "a22394da363248478e8ebffbdd754d63"; 
         if ($category == "all")
             $url = "https://newsapi.org/v2/top-headlines?country=".$country."&apiKey=".$api_key;
-        else if ($category == "general")
-            $url = "https://newsapi.org/v2/top-headlines?category=".$category."&apiKey=".$api_key;
         else
             $url = "https://newsapi.org/v2/top-headlines?country=".$country."&category=".$category."&apiKey=".$api_key;
         $data = json_decode(file_get_contents($url), true);
@@ -106,8 +104,6 @@
             $api_key = "5f7c4673c4ca47a29d9e75e832bac673"; 
             if ($category == "all")
                 $url = "https://newsapi.org/v2/top-headlines?country=".$country."&apiKey=".$api_key;
-            else if ($category == "general")
-                $url = "https://newsapi.org/v2/top-headlines?category=".$category."&apiKey=".$api_key;
             else
                 $url = "https://newsapi.org/v2/top-headlines?country=".$country."&category=".$category."&apiKey=".$api_key;
             $data = json_decode(file_get_contents($url), true);
@@ -119,8 +115,6 @@
                 $api_key = "0f7c6579373a4191bf6ea909ffc31eb5"; 
                 if ($category == "all")
                     $url = "https://newsapi.org/v2/top-headlines?country=".$country."&apiKey=".$api_key;
-                else if ($category == "general")
-                    $url = "https://newsapi.org/v2/top-headlines?category=".$category."&apiKey=".$api_key;
                 else
                     $url = "https://newsapi.org/v2/top-headlines?country=".$country."&category=".$category."&apiKey=".$api_key;
                 $data = json_decode(file_get_contents($url), true);
@@ -132,8 +126,6 @@
                     $api_key = "1ce380e031154b71a1424914b9d4f8b5"; 
                     if ($category == "all")
                         $url = "https://newsapi.org/v2/top-headlines?country=".$country."&apiKey=".$api_key;
-                    else if ($category == "general")
-                        $url = "https://newsapi.org/v2/top-headlines?category=".$category."&apiKey=".$api_key;
                     else
                         $url = "https://newsapi.org/v2/top-headlines?country=".$country."&category=".$category."&apiKey=".$api_key;
                     $data = json_decode(file_get_contents($url), true);
@@ -145,8 +137,6 @@
                         $api_key = "c91b92a7592e470a9e37d12ed5b5bf8e"; 
                         if ($category == "all")
                             $url = "https://newsapi.org/v2/top-headlines?country=".$country."&apiKey=".$api_key;
-                        else if ($category == "general")
-                            $url = "https://newsapi.org/v2/top-headlines?category=".$category."&apiKey=".$api_key;
                         else
                             $url = "https://newsapi.org/v2/top-headlines?country=".$country."&category=".$category."&apiKey=".$api_key;
                         $data = json_decode(file_get_contents($url), true);
