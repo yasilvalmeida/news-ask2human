@@ -206,7 +206,7 @@ paginationDraw = () => {
       items: total,
       itemsOnPage: paginationItemPerIndex,
       displayedPages: 3,
-      onPageClick: function(pageNumber) {
+      onPageClick: (pageNumber) => {
         paginationIndex = pageNumber;
         loadByIndex(last_category);
         goTop();
