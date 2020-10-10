@@ -6,7 +6,9 @@ var last_category = "all",
   paginationItemPerIndex = 50,
   total = 0,
   countries = null,
-  categories = null;
+  categories = null,
+  short = 20,
+  long = 50;
 $(() => {
   loadCategories();
   loadCountries();
@@ -242,7 +244,7 @@ loadByIndex = (category) => {
         var data = JSON.parse(result).articles,
           htmlContent = "";
         $.each(data, (i, article) => {
-          var title = article.title.substring(0, 30),
+          var title = article.title.substring(0, 25),
             publishedAt = convertDate(article.date),
             source = article.source,
             urlToImage = article.image,
@@ -269,6 +271,15 @@ loadByIndex = (category) => {
     },
   });
 };
+subStringByCountryCode = (title) =>{
+  if (country_code == "jp" || 
+  country_code == "ch" || 
+  country_code == "ru" || 
+  country_code == "ae")
+    return title.substring(0, 25)
+  else 
+    title.substring(0, 30); 
+} 
 convertDate = (inputFormat) => {
   var date = inputFormat.split("-");
   return date[2] + "-" + date[1] + "-" + date[0];
