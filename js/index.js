@@ -3,6 +3,7 @@ var last_category = "all",
   country_name = "",
   paginationIndex = 1,
   paginationItemPerIndex = 50,
+  total = 0,
   countries = null,
   categories = null;
 $(() => {
@@ -188,8 +189,8 @@ computePageGroup = (category) => {
     cache: false,
     success: function (result) {
       try {
-        var data = JSON.parse(result),
-          total = data.total;
+        var data = JSON.parse(result);
+        total = data.total;
         //console.log(total);
         paginationGroup = Math.ceil(total / paginationItemPerIndex);
         paginationDraw();
@@ -201,27 +202,16 @@ computePageGroup = (category) => {
   });
 };
 paginationDraw = () => {
-  var htmlPagination =
-    '<nav style="margin-left: 50px; margin-top: 20px"><ul class="pagination"><li class="page-item"><a class="page-link" href="javascript:loadPrev()" aria-label="Previous"><span aria-hidden="true"><i class="fas fa-arrow-alt-circle-left"></i></span></a></li>';
-  for (var i = 1; i <= paginationGroup; i++) {
-    if (paginationIndex == i)
-      htmlPagination +=
-        '<li class="page-item active"><a class="page-link" href="javascript:loadAt(' +
-        i +
-        ')">' +
-        i +
-        "</a></li>";
-    else
-      htmlPagination +=
-        '<li class="page-item"><a class="page-link" href="javascript:loadAt(' +
-        i +
-        ')">' +
-        i +
-        "</a></li>";
-  }
-  htmlPagination +=
-    '<li class="page-item"><a class="page-link" href="javascript:loadNext()" aria-label="Next"><span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span></a></li></ul></nav>';
-  $("#paginationContent").html(htmlPagination);
+ $("#paginationContent").pagination({
+      items: total,
+      itemsOnPage: paginationItemPerIndex,
+      displayedPages: 3,
+      onPageClick: function(pageNumber) {
+        paginationIndex = pageNumber;
+        loadByIndex(last_category);
+        goTop();
+      }
+  });
 };
 loadByIndex = (category) => {
   var formData = new FormData(),
@@ -278,28 +268,6 @@ loadByIndex = (category) => {
       }
     },
   });
-};
-loadPrev = () => {
-  if (paginationIndex > 1) {
-    paginationIndex--;
-    paginationDraw();
-    loadByIndex(last_category);
-    goTop();
-  }
-};
-loadAt = (num) => {
-  paginationIndex = num;
-  paginationDraw();
-  loadByIndex(last_category);
-  goTop();
-};
-loadNext = () => {
-  if (paginationIndex < paginationGroup) {
-    paginationIndex++;
-    paginationDraw();
-    loadByIndex(last_category);
-    goTop();
-  }
 };
 convertDate = (inputFormat) => {
   var date = inputFormat.split("-");

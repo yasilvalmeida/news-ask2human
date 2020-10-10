@@ -5,7 +5,7 @@
 		private $select; 
 		private $query; 
 		function connect() { 
-			$connection = mysqli_connect("ybytesi.com", "news-a2h_sa", "N3ws*2020%$", "news-ask2human_db");
+			$connection = mysqli_connect("dev.ybytesi.com", "news-a2h_sa", "N3ws*2020%$", "news-ask2human_db");
 			if(!$connection){
 				echo "Error: Unable to connect to MySQL." . PHP_EOL;
 				echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
