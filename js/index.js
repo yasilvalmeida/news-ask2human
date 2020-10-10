@@ -112,6 +112,8 @@ getUserCountry = () => {
     (response) => {
       var found = false;
       $.each(countries, (i, country) => {
+        console.log("API Country Code = " + response.country);
+        console.log("DB Country Code = " + country.code);
         if (response.country.toLowerCase() == country.code.toLowerCase()) {
           country_id = country.id;
           country_code = country_code.toLocaleLowerCase();
