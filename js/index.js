@@ -112,11 +112,9 @@ getUserCountry = () => {
     (response) => {
       var found = false;
       $.each(countries, (i, country) => {
-        console.log("API Country Code = " + response.country);
-        console.log("DB Country Code = " + country.code);
         if (response.country.toLowerCase() == country.code.toLowerCase()) {
           country_id = country.id;
-          country_code = country_code.toLocaleLowerCase();
+          country_code = country.code.toLowerCase();
           country_flag = country_code == "ch" ? "cn" : (country_code == "cn" ? "ch" : country_code);
           country_name = country.name;
           found = true;
@@ -146,7 +144,7 @@ getUserCountry = () => {
   );
 };
 selectCountry = () => {
-  country_code = $("#country-select option:selected").val().toLocaleLowerCase();
+  country_code = $("#country-select option:selected").val().toLowerCase();
   country_flag = country_code == "ch" ? "cn" : country_code;
   country_name = $("#country-select option:selected").text();
   $("#all").html(
