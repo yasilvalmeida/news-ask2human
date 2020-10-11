@@ -45,7 +45,7 @@
                 $title  = mysqli_real_escape_string($connection, $article["title"]);
                 $date   = explode("T", $article["publishedAt"])[0];
                 $image  = $article["urlToImage"];
-                $url    = $article["url"];
+                $url    = mysqli_real_escape_string($connection, $article["url"]);
                 $source = mysqli_real_escape_string($connection, $article["source"]["name"]);
                 if ($image != "" && $url != "") {
                     $query = "
