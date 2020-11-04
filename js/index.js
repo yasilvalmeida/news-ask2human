@@ -3,7 +3,7 @@ var last_category = "all",
   country_name = "",
   country_flag = "",
   paginationIndex = 1,
-  paginationItemPerIndex = 50,
+  paginationItemPerIndex = 10,
   total = 0,
   countries = null,
   categories = null,
@@ -193,8 +193,7 @@ computePageGroup = (category) => {
       try {
         var data = JSON.parse(result);
         total = data.total;
-        //console.log(total);
-        paginationGroup = Math.ceil(total / paginationItemPerIndex);
+        console.log(total);
         paginationDraw();
         loadByIndex(category);
       } catch (error) {
